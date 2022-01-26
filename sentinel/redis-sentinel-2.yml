@@ -18,7 +18,7 @@ metadata:
 spec:
   storageClassName: ""
   accessModes:
-    - ReadWriteOnce 
+    - ReadWriteOnce
   volumeName: pv-redis-sentinel-instance-2
   resources:
     requests:
@@ -32,9 +32,9 @@ metadata:
   name: svc-redis-sentinel-instance-2
 spec:
   ports:
-  - port: 26379
-    protocol: TCP
-    targetPort: 26379
+    - port: 26379
+      protocol: TCP
+      targetPort: 26379
   selector:
     app: deployment-redis-sentinel-instance-2
   type: ClusterIP
@@ -57,34 +57,35 @@ spec:
         redis_sentinel: "yes"
     spec:
       containers:
-      - image: shishirkhandelwal/redis-sentinel:0.5
-        name: redis-sentinel
-        env:
-        - name: SENTINEL_QUORUM
-          value: "2"
-        - name: SENTINEL_DOWN_AFTER
-          value: "5000"
-        - name: SENTINEL_FAILOVER
-          value: "5000"
-        - name: REDIS_MASTER
-          value: "svc-redis-instance-1"
-        - name: BIND_ADDR
-          value: "0.0.0.0"
-        - name: SENTINEL_SVC_IP
-          value: "svc-redis-sentinel-instance-2"
-        - name: SENTINEL_SVC_PORT
-          value: "26379"
-        - name: SENTINEL_RESOLVE_HOSTNAMES
-          value: "yes"
-        - name: SENTINEL_ANNOUNCE_HOSTNAMES 
-          value: "yes"
-        - name: SENTINEL_CONFIG_FILE_DIR
-          value: "/sentinel-conf-file/" 
-        volumeMounts:
-        - name: "pvc-redis-instance"
-          mountPath: "/sentinel-conf-file/"
+        - image: shishirkhandelwal/redis-sentinel:0.6
+          name: redis-sentinel
+          env:
+            - name: SENTINEL_QUORUM
+              value: "2"
+            - name: SENTINEL_DOWN_AFTER
+              value: "5000"
+            - name: SENTINEL_FAILOVER
+              value: "5000"
+            - name: REDIS_MASTER
+              value: "svc-redis-instance-1"
+            - name: BIND_ADDR
+              value: "0.0.0.0"
+            - name: SENTINEL_SVC_IP
+              value: "svc-redis-sentinel-instance-2"
+            - name: SENTINEL_SVC_PORT
+              value: "26379"
+            - name: SENTINEL_RESOLVE_HOSTNAMES
+              value: "yes"
+            - name: SENTINEL_ANNOUNCE_HOSTNAMES
+              value: "yes"
+            - name: SENTINEL_CONFIG_FILE_DIR
+              value: "/sentinel-conf-file/"
+          volumeMounts:
+            - name: "pvc-redis-instance"
+              mountPath: "/sentinel-conf-file/"
       volumes:
-      - name: "pvc-redis-instance"
-        persistentVolumeClaim:
-          claimName: "pvc-redis-sentinel-instance-2"
+        - name: "pvc-redis-instance"
+          persistentVolumeClaim:
+            claimName: "pvc-redis-sentinel-instance-2"
 ---
+

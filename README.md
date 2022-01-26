@@ -1,2 +1,3 @@
 # redis-ha
-My space to experiment with redis on K8s.
+
+refere to this article: [Creating a Redis cluster in Kubernetes](https://www.linkedin.com/pulse/creating-redis-cluster-kubernetes-shishir-khandelwal)
